@@ -6,7 +6,7 @@ defmodule AdventOfCode.Day02 do
   end
 
   defmodule Game do
-    defstruct id: 0, set: %{}
+    defstruct id: 0, set: %Set{}
   end
 
   color = choice(["red", "green", "blue"] |> Enum.map(&string/1))
