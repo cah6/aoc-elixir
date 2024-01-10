@@ -10,8 +10,9 @@ defmodule AdventOfCode.Day03 do
   end
 
   # Example input:
-  # 467..114..
-  # ...*......
+  # 467..
+  # ...*.
+  # ..35.
   def part1(args) do
     matrix =
       args
@@ -91,6 +92,48 @@ defmodule AdventOfCode.Day03 do
     y >= 0 && y < Enum.count(matrix) && x >= 0 && x < Enum.count(Enum.at(matrix, y))
   end
 
-  def part2(_args) do
+  def part2(args) do
+    matrix =
+      args
+      |> String.split("\n", trim: true)
+      |> Enum.map(&String.to_charlist/1)
+      |> Enum.map(&combine_numbers/1)
+  end
+
+  # ["467", "467", "467", ".", "."] = combine_numbers(~c"467..")
+  def combine_numbers(input) do
+    # TODO: can I use Enum.chunk_while for this?
+    final_acc_apply = fn xs, streak ->
+      if streak == "" do
+        xs
+      else
+        xs ++ [streak]
+      end
+    end
+
+    {streak, total} =
+      Enum.reduce(input, {"", []}, fn v, {streak, total} ->
+        if is_digit?(v) do
+          {streak <> <<v>>, total}
+        else
+          if "" == streak do
+            {"", total ++ [<<v>>]}
+          else
+            {"", total ++ [streak | [<<v>>]]}
+          end
+        end
+      end)
+
+    total = final_acc_apply.(total, streak)
+
+    IO.inspect(total)
+
+    Enum.map(total, fn x ->
+      case Integer.parse(x) do
+        {x, _rem} -> List.duplicate(x, x |> Integer.digits() |> Enum.count())
+        :error -> x
+      end
+    end)
+    |> List.flatten()
   end
 end
