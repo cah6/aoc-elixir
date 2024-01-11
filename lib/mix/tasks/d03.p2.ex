@@ -5,20 +5,20 @@ defmodule Mix.Tasks.D03.P2 do
 
   @shortdoc "Day 03 Part 2"
   def run(args) do
-    # input = AdventOfCode.Input.get!(3, 2023)
+    input = AdventOfCode.Input.get!(3, 2023)
 
-    input = """
-    467..114..
-    ...*......
-    ..35..633.
-    ......#...
-    617*......
-    .....+.58.
-    ..592.....
-    ......755.
-    ...$.*....
-    .664.598..
-    """
+    # input = """
+    # 467..114..
+    # ...*......
+    # ..35..633.
+    # ......#...
+    # 617*......
+    # .....+.58.
+    # ..592.....
+    # ......755.
+    # ...$.*....
+    # .664.598..
+    # """
 
     if Enum.member?(args, "-b"),
       do: Benchee.run(%{part_2: fn -> input |> part2() end}),
